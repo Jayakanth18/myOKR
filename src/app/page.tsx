@@ -1,95 +1,74 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import { logout } from "./logout/action";
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className={styles.ctas}>
+    <>
+      {/* <form action={logout}>
+        <button type="submit">Logout</button>
+      </form> */}
+      <div>
+      {/* Hero Section */}
+      <section className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 text-white py-20">
+        <div className="container mx-auto px-6 text-center">
+          <h1 className="text-4xl sm:text-5xl font-bold mb-6">myOKR</h1>
+          <p className="text-xl sm:text-2xl mb-6">
+            The easiest way to set, track, and achieve your goals with OKRs.
+          </p>
           <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/login"
+            className="bg-yellow-500 hover:bg-yellow-400 text-black py-3 px-6 rounded-full text-lg font-semibold transition"
           >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
+            Start Using myOKR
           </a>
         </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-20 bg-gray-100">
+        <div className="container mx-auto px-6 text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-8">Features</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
+            <div className="p-6 bg-white shadow-lg rounded-xl">
+              <h3 className="text-xl font-semibold mb-4">Goal Setting</h3>
+              <p>Set clear and actionable goals for teams and individuals.</p>
+            </div>
+            <div className="p-6 bg-white shadow-lg rounded-xl">
+              <h3 className="text-xl font-semibold mb-4">Progress Tracking</h3>
+              <p>Track your progress towards your goals in real-time.</p>
+            </div>
+            <div className="p-6 bg-white shadow-lg rounded-xl">
+              <h3 className="text-xl font-semibold mb-4">Collaboration</h3>
+              <p>Collaborate and align with your team effectively.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Call to Action */}
+      <section className="bg-blue-600 text-white py-20">
+        <div className="container mx-auto px-6 text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-6">
+            Ready to Achieve Your Goals?
+          </h2>
+          <p className="text-lg mb-6">
+            Start using myOKR today and take the first step towards achieving success!
+          </p>
+          <a
+            href="/login"
+            className="bg-yellow-500 hover:bg-yellow-400 text-black py-3 px-6 rounded-full text-lg font-semibold transition"
+          >
+            Sign Up Now
+          </a>
+        </div>
+      </section>
+
+      {/* Footer Section */}
+      <footer className="bg-gray-800 text-white py-6">
+        <div className="container mx-auto text-center">
+          <p>© 2025 myOKR. All rights reserved.</p>
+        </div>
       </footer>
     </div>
+    </>
   );
 }
