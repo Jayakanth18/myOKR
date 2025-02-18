@@ -39,12 +39,17 @@ const Dashboard = () => {
   }, []);
 
   const handleOKRSave = async () => {
-    const { data, error } = await getOKRs();
-    if (error) {
-      console.error("Error fetching OKRs:", error);
-    } else {
-      setOKRs(data);
-      setSelectedOKR(null);
+    try {
+      const { data, error } = await getOKRs();
+      if (error) {
+        console.error("Error fetching OKRs:", error);
+      } else {
+        setOKRs(data);
+        setSelectedOKR(null);
+      }
+    } catch (error) {
+      console.error("Error saving OKR:", error);
+      alert("Failed to save OKR. Please try again.");
     }
   };
 
@@ -52,12 +57,14 @@ const Dashboard = () => {
     setSelectedOKR(okr);
   };
 
-  if (loading) return <p className="text-center text-xl">Loading...</p>; // Centered loading message
+  if (loading) return <p className="text-center text-xl">Loading...</p>;
 
   return (
     <div className="container mx-auto p-6">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl sm:text-4xl font-bold text-gray-800">OKR Dashboard</h1>
+        <h1 className="text-3xl sm:text-4xl font-bold text-gray-800">
+          OKR Dashboard
+        </h1>
         <form action={logout}>
           <button
             type="submit"
@@ -74,7 +81,8 @@ const Dashboard = () => {
         </div>
 
         <div className="bg-white shadow-lg rounded-lg p-6">
-          <OKRList okrs={okrs} onEdit={handleOKREdit} />
+          {/* Pass `setOKRs` as a prop to OKRList */}
+          <OKRList okrs={okrs} setOKRs={setOKRs} onEdit={handleOKREdit} />
         </div>
       </div>
     </div>

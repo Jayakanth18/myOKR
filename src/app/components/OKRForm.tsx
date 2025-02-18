@@ -10,15 +10,26 @@ const OKRForm = ({ okr, onSave }) => {
 
   useEffect(() => {
     if (okr) {
-      setObjective(okr.objective);
-      setKeyResults(okr.key_results);
+      setObjective(okr.objective || "");
+      setKeyResults(okr.key_results || [{ description: "", progress: 0 }]);
+    } else {
+      // Reset form when switching between OKRs
+      setObjective("");
+      setKeyResults([{ description: "", progress: 0 }]);
     }
   }, [okr]);
 
   const handleKeyResultChange = (index, field, value) => {
-    const newKeyResults = [...keyResults];
-    newKeyResults[index][field] = value;
-    setKeyResults(newKeyResults);
+    setKeyResults((prevKeyResults) =>
+      prevKeyResults.map((kr, i) =>
+        i === index
+          ? {
+              ...kr,
+              [field]: field === "progress" ? Number(value) || 0 : value,
+            }
+          : kr
+      )
+    );
   };
 
   const addKeyResult = () => {
@@ -28,22 +39,35 @@ const OKRForm = ({ okr, onSave }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newOKR = { objective, key_results: keyResults };
-    if (okr) {
-      await updateOKR(okr.id, newOKR);
-    } else {
-      await createOKR(newOKR);
+
+    try {
+      let savedOKR;
+      if (okr) {
+        savedOKR = await updateOKR(okr.id, newOKR);
+      } else {
+        savedOKR = await createOKR(newOKR);
+      }
+      onSave(savedOKR); // Ensure parent state updates with correct OKR
+    } catch (error) {
+      console.error("Error saving OKR:", error);
+      alert("Failed to save OKR. Please try again.");
     }
-    onSave();
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-xl mx-auto p-6 border rounded-lg shadow-lg bg-white">
+    <form
+      onSubmit={handleSubmit}
+      className="max-w-xl mx-auto p-6 border rounded-lg shadow-lg bg-white"
+    >
       <h2 className="text-2xl font-semibold text-center mb-4">
         {okr ? "Edit OKR" : "Create OKR"}
       </h2>
 
       <div className="mb-4">
-        <label htmlFor="objective" className="block text-lg font-medium text-gray-700">
+        <label
+          htmlFor="objective"
+          className="block text-lg font-medium text-gray-700"
+        >
           Objective
         </label>
         <input
@@ -62,14 +86,10 @@ const OKRForm = ({ okr, onSave }) => {
       {keyResults.map((kr, index) => (
         <div key={index} className="mb-4 space-y-4">
           <div>
-            <label
-              htmlFor={`description-${index}`}
-              className="block text-md font-medium text-gray-700"
-            >
+            <label className="block text-md font-medium text-gray-700">
               Key Result Description
             </label>
             <input
-              id={`description-${index}`}
               type="text"
               value={kr.description}
               onChange={(e) =>
@@ -82,14 +102,10 @@ const OKRForm = ({ okr, onSave }) => {
           </div>
 
           <div>
-            <label
-              htmlFor={`progress-${index}`}
-              className="block text-md font-medium text-gray-700"
-            >
-              Progress
+            <label className="block text-md font-medium text-gray-700">
+              Progress (%)
             </label>
             <input
-              id={`progress-${index}`}
               type="number"
               value={kr.progress}
               onChange={(e) =>
